@@ -3,6 +3,8 @@ package com.domain.devmovie.controllers;
 import lombok.RequiredArgsConstructor;
 import com.domain.devmovie.entities.User;
 import org.springframework.http.HttpStatus;
+import com.domain.devmovie.dto.RequestUserDto;
+import com.domain.devmovie.dto.ResponseUserDto;
 import com.domain.devmovie.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +18,8 @@ public class UserController {
 
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        var createdUser = userService.createUser(user);
+    public ResponseEntity<ResponseUserDto> createUser(@RequestBody RequestUserDto dto) {
+        var createdUser = userService.createUser(dto);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 

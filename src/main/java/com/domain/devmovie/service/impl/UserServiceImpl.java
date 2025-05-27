@@ -2,11 +2,16 @@ package com.domain.devmovie.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import com.domain.devmovie.entities.User;
+import com.domain.devmovie.mapper.UserMapper;
+import com.domain.devmovie.dto.RequestUserDto;
 import org.springframework.stereotype.Service;
 import com.domain.devmovie.service.UserService;
+import com.domain.devmovie.dto.ResponseUserDto;
 import com.domain.devmovie.repositories.UserRepository;
 import com.domain.devmovie.exceptions.UserNotFoundException;
 import com.domain.devmovie.exceptions.EmailNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 @RequiredArgsConstructor
@@ -14,14 +19,21 @@ public class UserServiceImpl implements UserService {
 
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Override
-    public User createUser(User user) {
-        validateUser(user);
-        if (userRepository.findByEmail(user.getEmail()).isPresent())
+    @Transactional
+    public ResponseUserDto createUser(RequestUserDto request) {
+        if (userRepository.findByEmail(request.email()).isPresent())
             throw new IllegalArgumentException("Email already registered");
-        return userRepository.save(user);
+
+        var user = UserMapper.from(request);
+        validateUser(user);
+        user.setPassword(passwordEncoder.encode(request.password()));
+
+        var savedUser = userRepository.save(user);
+        return new ResponseUserDto(savedUser.getId(), savedUser.getName());
     }
 
 

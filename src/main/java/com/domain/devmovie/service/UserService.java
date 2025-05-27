@@ -1,12 +1,12 @@
 package com.domain.devmovie.service;
 
 import com.domain.devmovie.entities.User;
-
-import java.util.Optional;
+import com.domain.devmovie.dto.RequestUserDto;
+import com.domain.devmovie.dto.ResponseUserDto;
 
 public interface UserService {
 
-    User createUser(User user);
+    ResponseUserDto createUser(RequestUserDto dto);
 
     User getUserByEmail(String email);
 
