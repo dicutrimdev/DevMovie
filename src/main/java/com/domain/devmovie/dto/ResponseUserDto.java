@@ -1,4 +1,4 @@
 package com.domain.devmovie.dto;
 
-public record ResponseUserDto(Long id, String name) {
+public record ResponseUserDto(Long id, String name, String email) {
 }

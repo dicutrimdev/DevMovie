@@ -10,6 +10,7 @@ import java.util.ArrayList;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 
 @Entity
 @Table(name = "TB_MOVIE_LIST")

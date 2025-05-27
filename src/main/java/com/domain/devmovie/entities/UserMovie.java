@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 
 @Entity
 @Table(name = "TB_USER_MOVIE")
@@ -19,7 +20,7 @@ public class UserMovie {
     private String title;
     private String posterUrl;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 }

@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 
 @Entity
 @Table(name = "TB_MOVIE_LIST_ITEM")

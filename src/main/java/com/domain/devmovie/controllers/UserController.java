@@ -1,7 +1,6 @@
 package com.domain.devmovie.controllers;
 
 import lombok.RequiredArgsConstructor;
-import com.domain.devmovie.entities.User;
 import org.springframework.http.HttpStatus;
 import com.domain.devmovie.dto.RequestUserDto;
 import com.domain.devmovie.dto.ResponseUserDto;
@@ -25,14 +24,14 @@ public class UserController {
 
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+    public ResponseEntity<ResponseUserDto> getUserById(@PathVariable Long id) {
         var user = userService.getUserById(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
 
     @GetMapping(value = "/search")
-    public ResponseEntity<User> getUserByEmail(@RequestParam String email) {
+    public ResponseEntity<ResponseUserDto> getUserByEmail(@RequestParam String email) {
         var user = userService.getUserByEmail(email);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }

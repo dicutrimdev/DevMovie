@@ -32,26 +32,30 @@ public class UserServiceImpl implements UserService {
         validateUser(user);
         user.setPassword(passwordEncoder.encode(request.password()));
 
-        var savedUser = userRepository.save(user);
-        return new ResponseUserDto(savedUser.getId(), savedUser.getName());
+        userRepository.save(user);
+        return getResponseUserDto(user);
     }
 
 
     @Override
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(
-                () -> new EmailNotFoundException("User not found with email: " + email)
-        );
+    @Transactional(readOnly = true)
+    public ResponseUserDto getUserByEmail(String email) {
+        var user = userRepository.findByEmail(email).orElseThrow(
+                () -> new EmailNotFoundException("User not found with email: " + email));
+        return getResponseUserDto(user);
     }
 
 
     @Override
-    public User getUserById(Long id) {
-        return findUserByIdOrThrow(id);
+    @Transactional(readOnly = true)
+    public ResponseUserDto getUserById(Long id) {
+        var user = findUserByIdOrThrow(id);
+        return getResponseUserDto(user);
     }
 
 
     @Override
+    @Transactional
     public void deleteUser(Long id) {
         var user = findUserByIdOrThrow(id);
         userRepository.delete(user);
@@ -80,5 +84,10 @@ public class UserServiceImpl implements UserService {
 
         if (user.getPassword() == null || user.getPassword().isBlank())
             throw new IllegalArgumentException("The password field is required");
+    }
+
+
+    private static ResponseUserDto getResponseUserDto(User user) {
+        return new ResponseUserDto(user.getId(), user.getName(), user.getEmail());
     }
 }
