@@ -27,5 +27,5 @@ public class MovieList {
     private User user;
 
     @OneToMany(mappedBy = "movieList", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MovieListItem> movies = new ArrayList<>();
+    private List<MovieListItem> items = new ArrayList<>();
 }
