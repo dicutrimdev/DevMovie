@@ -1,5 +1,6 @@
 package com.domain.devmovie.service.impl;
 
+import com.domain.devmovie.dto.RequestRatingDto;
 import lombok.RequiredArgsConstructor;
 import com.domain.devmovie.entities.Rating;
 import org.springframework.stereotype.Service;
@@ -23,15 +24,15 @@ public class RatingServiceImpl implements RatingService {
 
     @Override
     @Transactional
-    public ResponseRatingDto addRating(Long userId, String movieId, Integer score, String comment) {
+    public ResponseRatingDto addRating(Long userId, RequestRatingDto request) {
         var user = userRepository.findById(userId).orElseThrow(
                 () -> new UserNotFoundException("User not found with id: " + userId)
         );
         Rating rating = Rating.builder()
                 .user(user)
-                .movieId(movieId)
-                .score(score)
-                .comment(comment)
+                .movieId(request.movieId())
+                .score(request.score())
+                .comment(request.comment())
                 .build();
         Rating savedRating = ratingRepository.save(rating);
         return RatingMapper.toDto(savedRating);

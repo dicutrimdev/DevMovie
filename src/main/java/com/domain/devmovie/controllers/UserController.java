@@ -1,5 +1,6 @@
 package com.domain.devmovie.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import com.domain.devmovie.dto.RequestUserDto;
@@ -17,7 +18,7 @@ public class UserController {
 
 
     @PostMapping
-    public ResponseEntity<ResponseUserDto> createUser(@RequestBody RequestUserDto dto) {
+    public ResponseEntity<ResponseUserDto> createUser(@Valid @RequestBody RequestUserDto dto) {
         var createdUser = userService.createUser(dto);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }

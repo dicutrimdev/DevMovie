@@ -1,6 +1,8 @@
 package com.domain.devmovie.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import com.domain.devmovie.dto.RequestRatingDto;
 import com.domain.devmovie.dto.ResponseRatingDto;
 import com.domain.devmovie.service.RatingService;
 import org.springframework.web.bind.annotation.*;
@@ -16,13 +18,8 @@ public class RatingController {
 
 
     @PostMapping
-    public ResponseRatingDto addRating(
-            @RequestParam Long userId,
-            @RequestParam String movieId,
-            @RequestParam Integer score,
-            @RequestParam(required = false) String comment
-    ) {
-        return ratingService.addRating(userId, movieId, score, comment);
+    public ResponseRatingDto addRating(@RequestParam Long userId, @Valid @RequestBody RequestRatingDto request) {
+        return ratingService.addRating(userId, request);
     }
 
 

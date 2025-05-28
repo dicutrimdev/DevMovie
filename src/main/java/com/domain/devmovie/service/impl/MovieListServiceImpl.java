@@ -1,5 +1,7 @@
 package com.domain.devmovie.service.impl;
 
+import com.domain.devmovie.dto.RequestMovieListDto;
+import com.domain.devmovie.dto.RequestMovieListItemDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.domain.devmovie.entities.MovieList;
@@ -30,12 +32,12 @@ public class MovieListServiceImpl implements MovieListService {
 
     @Override
     @Transactional
-    public ResponseMovieListDto createList(Long userId, String name) {
+    public ResponseMovieListDto createList(Long userId, RequestMovieListDto request) {
         var user = userRepository.findById(userId).orElseThrow(
                 () -> new UserNotFoundException("User not found with id: " + userId)
         );
-        var list = MovieList.builder().name(name).user(user).build();
-        var savedList = movieListRepository.save(list);
+        var movieList = MovieList.builder().name(request.name()).user(user).build();
+        var savedList = movieListRepository.save(movieList);
         return MovieListMapper.toDtoList(savedList);
     }
 
@@ -62,11 +64,11 @@ public class MovieListServiceImpl implements MovieListService {
 
     @Override
     @Transactional
-    public ResponseMovieListItemDto addMovieToList(Long listId, String movieId, String title) {
+    public ResponseMovieListItemDto addMovieToList(Long listId, RequestMovieListItemDto request) {
         var list = movieListRepository.findById(listId).orElseThrow(
                 () -> new MovieListNotFoundException("List not found with id: " + listId)
         );
-        var item = MovieListItem.builder().movieId(movieId).title(title).movieList(list).build();
+        var item = MovieListItem.builder().movieId(request.movieId()).title(request.title()).movieList(list).build();
         var savedItem = movieListItemRepository.save(item);
         return MovieListMapper.toDto(savedItem);
     }

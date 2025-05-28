@@ -1,4 +1,12 @@
 package com.domain.devmovie.dto;
 
-public record RequestMovieListItemDto(String movieId, String title) {
+import jakarta.validation.constraints.NotBlank;
+
+public record RequestMovieListItemDto(
+        @NotBlank(message = "Movie ID must not be blank")
+        String movieId,
+
+        @NotBlank(message = "Movie title must not be blank")
+        String title
+) {
 }

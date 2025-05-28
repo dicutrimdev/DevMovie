@@ -1,5 +1,6 @@
 package com.domain.devmovie.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class UserMovieController {
 
     @PostMapping("/{userId}/favorites")
     public ResponseEntity<ResponseUserMovieDto> addFavorite(@PathVariable Long userId,
-                                                            @RequestBody RequestUserMovieDto request) {
+                                                            @Valid @RequestBody RequestUserMovieDto request) {
         ResponseUserMovieDto response = userMovieService.addFavorite(userId, request);
         return ResponseEntity.ok(response);
     }
