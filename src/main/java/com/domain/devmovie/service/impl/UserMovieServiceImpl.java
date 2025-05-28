@@ -1,8 +1,10 @@
 package com.domain.devmovie.service.impl;
 
+import com.domain.devmovie.dto.RequestUserMovieDto;
+import com.domain.devmovie.dto.ResponseUserMovieDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import com.domain.devmovie.entities.UserMovie;
+import org.springframework.stereotype.Service;
 import com.domain.devmovie.mapper.UserMovieMapper;
 import com.domain.devmovie.service.UserMovieService;
 import com.domain.devmovie.repositories.UserRepository;
@@ -24,20 +26,26 @@ public class UserMovieServiceImpl implements UserMovieService {
 
     @Override
     @Transactional
-    public UserMovie addFavorite(Long userId, String movieId, String title) {
+    public ResponseUserMovieDto addFavorite(Long userId, RequestUserMovieDto request) {
         var user = userRepository.findById(userId).orElseThrow(
                 () -> new UserNotFoundException("User not found with id: " + userId));
-        var userMovie = UserMovieMapper.from(user, movieId, title);
-        return userMovieRepository.save(userMovie);
+
+        var userMovie = UserMovieMapper.fromRequestToEntity(request, user);
+        var savedUserMovie = userMovieRepository.save(userMovie);
+
+        return UserMovieMapper.fromEntityToResponse(savedUserMovie);
     }
 
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserMovie> getFavoritesByUser(Long userId) {
+    public List<ResponseUserMovieDto> getFavoritesByUser(Long userId) {
         if (!userRepository.existsById(userId))
             throw new UserNotFoundException("User not found with id: " + userId);
-        return userMovieRepository.findByUserId(userId);
+
+        return userMovieRepository.findByUserId(userId).stream()
+                .map(UserMovieMapper::fromEntityToResponse)
+                .toList();
     }
 
 

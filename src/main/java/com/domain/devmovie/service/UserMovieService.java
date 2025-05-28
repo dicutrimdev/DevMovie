@@ -1,14 +1,15 @@
 package com.domain.devmovie.service;
 
-import com.domain.devmovie.entities.UserMovie;
+import com.domain.devmovie.dto.RequestUserMovieDto;
+import com.domain.devmovie.dto.ResponseUserMovieDto;
 
 import java.util.List;
 
 public interface UserMovieService {
 
-    UserMovie addFavorite(Long userId, String movieId, String title);
+    ResponseUserMovieDto addFavorite(Long userId, RequestUserMovieDto request);
 
-    List<UserMovie> getFavoritesByUser(Long userId);
+    List<ResponseUserMovieDto> getFavoritesByUser(Long userId);
 
     void removeFavorite(Long favoriteId);
 }
