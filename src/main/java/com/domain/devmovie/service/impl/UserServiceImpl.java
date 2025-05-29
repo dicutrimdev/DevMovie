@@ -23,21 +23,6 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    @Transactional
-    public ResponseUserDto createUser(RequestUserDto request) {
-        if (userRepository.findByEmail(request.email()).isPresent())
-            throw new IllegalArgumentException("Email already registered");
-
-        var user = UserMapper.from(request);
-        validateUser(user);
-        user.setPassword(passwordEncoder.encode(request.password()));
-
-        userRepository.save(user);
-        return getResponseUserDto(user);
-    }
-
-
-    @Override
     @Transactional(readOnly = true)
     public ResponseUserDto getUserByEmail(String email) {
         var user = userRepository.findByEmail(email).orElseThrow(
