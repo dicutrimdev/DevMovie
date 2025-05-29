@@ -1,6 +1,8 @@
 package com.domain.devmovie.configurations;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;
+import com.domain.devmovie.filters.SecurityFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.web.SecurityFilterChain;
@@ -12,10 +14,14 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfiguration {
+
+    private final SecurityFilter securityFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -39,8 +45,8 @@ public class SecurityConfiguration {
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
 
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/users/*").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/users/*").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/users/search").authenticated()
@@ -60,7 +66,7 @@ public class SecurityConfiguration {
 
                         .anyRequest().authenticated()
                 )
-                //.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .headers(headers -> headers.frameOptions(
                                 HeadersConfigurer.FrameOptionsConfig::disable
                         )

@@ -3,6 +3,7 @@ package com.domain.devmovie.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.domain.devmovie.dto.RequestLoginDto;
+import com.domain.devmovie.service.TokenService;
 import com.domain.devmovie.dto.ResponseLoginDto;
 import com.domain.devmovie.service.LoginService;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,15 +14,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 @RequiredArgsConstructor
 public class LoginServiceImpl implements LoginService {
 
+    private final TokenService tokenService;
     private final AuthenticationManager authenticationManager;
 
     @Override
     public ResponseLoginDto login(RequestLoginDto request) {
-        var auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.email(), request.password())
+        var auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                request.email(), request.password())
         );
         var user = (UserDetails) auth.getPrincipal();
-        return new ResponseLoginDto(user.getUsername());
+        var token = tokenService.generateToken(user);
+        return new ResponseLoginDto(user.getUsername(), token);
     }
 }
