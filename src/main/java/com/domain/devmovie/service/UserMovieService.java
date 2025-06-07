@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface UserMovieService {
 
-    ResponseUserMovieDto addFavorite(Long userId, RequestUserMovieDto request);
+    ResponseUserMovieDto addFavoriteToWatchLater(Long userId, RequestUserMovieDto request);
 
     List<ResponseUserMovieDto> getFavoritesByUser(Long userId);
 

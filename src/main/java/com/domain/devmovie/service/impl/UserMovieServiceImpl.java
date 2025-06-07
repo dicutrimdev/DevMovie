@@ -1,11 +1,10 @@
 package com.domain.devmovie.service.impl;
 
-import com.domain.devmovie.dto.RequestUserMovieDto;
-import com.domain.devmovie.dto.ResponseUserMovieDto;
 import lombok.RequiredArgsConstructor;
-import com.domain.devmovie.entities.UserMovie;
 import org.springframework.stereotype.Service;
 import com.domain.devmovie.mapper.UserMovieMapper;
+import com.domain.devmovie.dto.RequestUserMovieDto;
+import com.domain.devmovie.dto.ResponseUserMovieDto;
 import com.domain.devmovie.service.UserMovieService;
 import com.domain.devmovie.repositories.UserRepository;
 import com.domain.devmovie.exceptions.UserNotFoundException;
@@ -26,7 +25,7 @@ public class UserMovieServiceImpl implements UserMovieService {
 
     @Override
     @Transactional
-    public ResponseUserMovieDto addFavorite(Long userId, RequestUserMovieDto request) {
+    public ResponseUserMovieDto addFavoriteToWatchLater(Long userId, RequestUserMovieDto request) {
         var user = userRepository.findById(userId).orElseThrow(
                 () -> new UserNotFoundException("User not found with id: " + userId));
 

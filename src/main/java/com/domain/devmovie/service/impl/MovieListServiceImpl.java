@@ -1,15 +1,15 @@
 package com.domain.devmovie.service.impl;
 
-import com.domain.devmovie.dto.RequestMovieListDto;
-import com.domain.devmovie.dto.RequestMovieListItemDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.domain.devmovie.entities.MovieList;
 import com.domain.devmovie.entities.MovieListItem;
 import com.domain.devmovie.mapper.MovieListMapper;
+import com.domain.devmovie.dto.RequestMovieListDto;
 import com.domain.devmovie.service.MovieListService;
 import com.domain.devmovie.dto.ResponseMovieListDto;
 import com.domain.devmovie.repositories.UserRepository;
+import com.domain.devmovie.dto.RequestMovieListItemDto;
 import com.domain.devmovie.dto.ResponseMovieListItemDto;
 import com.domain.devmovie.exceptions.UserNotFoundException;
 import com.domain.devmovie.repositories.MovieListRepository;
@@ -36,7 +36,9 @@ public class MovieListServiceImpl implements MovieListService {
         var user = userRepository.findById(userId).orElseThrow(
                 () -> new UserNotFoundException("User not found with id: " + userId)
         );
-        var movieList = MovieList.builder().name(request.name()).user(user).build();
+        var movieList = MovieList.builder().name(request.name())
+                .description(request.description()).user(user).build();
+
         var savedList = movieListRepository.save(movieList);
         return MovieListMapper.toDtoList(savedList);
     }
@@ -68,7 +70,9 @@ public class MovieListServiceImpl implements MovieListService {
         var list = movieListRepository.findById(listId).orElseThrow(
                 () -> new MovieListNotFoundException("List not found with id: " + listId)
         );
-        var item = MovieListItem.builder().movieId(request.movieId()).title(request.title()).movieList(list).build();
+        var item = MovieListItem.builder().movieId(request.movieId())
+                .title(request.title()).movieList(list).build();
+
         var savedItem = movieListItemRepository.save(item);
         return MovieListMapper.toDto(savedItem);
     }

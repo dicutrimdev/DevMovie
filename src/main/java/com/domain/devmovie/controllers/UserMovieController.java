@@ -37,7 +37,7 @@ public class UserMovieController {
     })
     public ResponseEntity<ResponseUserMovieDto> addFavorite(@PathVariable Long userId,
                                                             @Valid @RequestBody RequestUserMovieDto request) {
-        ResponseUserMovieDto response = userMovieService.addFavorite(userId, request);
+        ResponseUserMovieDto response = userMovieService.addFavoriteToWatchLater(userId, request);
         return ResponseEntity.ok(response);
     }
 
