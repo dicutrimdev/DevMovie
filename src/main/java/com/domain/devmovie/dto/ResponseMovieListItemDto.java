@@ -1,4 +1,4 @@
 package com.domain.devmovie.dto;
 
-public record ResponseMovieListItemDto(Long id, String movieId, String title) {
+public record ResponseMovieListItemDto(Long id, FilmeDTO filme) {
 }

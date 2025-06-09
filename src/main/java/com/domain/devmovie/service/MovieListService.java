@@ -1,9 +1,6 @@
 package com.domain.devmovie.service;
 
-import com.domain.devmovie.dto.RequestMovieListDto;
-import com.domain.devmovie.dto.ResponseMovieListDto;
-import com.domain.devmovie.dto.RequestMovieListItemDto;
-import com.domain.devmovie.dto.ResponseMovieListItemDto;
+import com.domain.devmovie.dto.*;
 
 import java.util.List;
 

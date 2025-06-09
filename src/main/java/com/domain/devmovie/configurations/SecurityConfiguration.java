@@ -53,10 +53,11 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.DELETE, "/api/users/*").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/users/search").authenticated()
 
-                        .requestMatchers(HttpMethod.POST, "/api/movie-lists").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/devmovie/users/*/movie-list").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/movie-lists/*").authenticated()
-                        .requestMatchers(HttpMethod.DELETE, "/api/movie-lists/*").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/api/movie-lists/*/add-movie").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/devmovie/my-lists/user/*").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/devmovie/movie-lists/*").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/devmovie/lists/*/add-movie").authenticated()
 
                         .requestMatchers(HttpMethod.GET, "/api/user-movies/*/favorites").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/user-movies/*/favorites").authenticated()

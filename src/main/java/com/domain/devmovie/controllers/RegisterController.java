@@ -27,7 +27,8 @@ public class RegisterController {
     @PostMapping("/register")
     @Operation(
             summary = "Register a new user",
-            description = "Creates a new user account by providing name, email, and password. The password will be stored securely (encrypted).")
+            description = "Creates a new user account by providing name, email, and password. " +
+                    "The password will be stored securely (encrypted).")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User registered successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid request data"),

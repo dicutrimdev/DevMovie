@@ -1,16 +1,13 @@
 package com.domain.devmovie.service.impl;
 
+import com.domain.devmovie.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.domain.devmovie.entities.MovieList;
 import com.domain.devmovie.entities.MovieListItem;
 import com.domain.devmovie.mapper.MovieListMapper;
-import com.domain.devmovie.dto.RequestMovieListDto;
 import com.domain.devmovie.service.MovieListService;
-import com.domain.devmovie.dto.ResponseMovieListDto;
 import com.domain.devmovie.repositories.UserRepository;
-import com.domain.devmovie.dto.RequestMovieListItemDto;
-import com.domain.devmovie.dto.ResponseMovieListItemDto;
 import com.domain.devmovie.exceptions.UserNotFoundException;
 import com.domain.devmovie.repositories.MovieListRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +23,7 @@ public class MovieListServiceImpl implements MovieListService {
 
 
     private final UserRepository userRepository;
+    private final MovieListMapper movieListMapper;
     private final MovieListRepository movieListRepository;
     private final MovieListItemRepository movieListItemRepository;
 
@@ -40,7 +38,7 @@ public class MovieListServiceImpl implements MovieListService {
                 .description(request.description()).user(user).build();
 
         var savedList = movieListRepository.save(movieList);
-        return MovieListMapper.toDtoList(savedList);
+        return movieListMapper.toDtoList(savedList);
     }
 
 
@@ -49,8 +47,7 @@ public class MovieListServiceImpl implements MovieListService {
     public List<ResponseMovieListDto> getListsByUser(Long userId) {
         if (!userRepository.existsById(userId))
             throw new UserNotFoundException("User not found with id: " + userId);
-        return movieListRepository.findByUserId(userId).stream()
-                .map(MovieListMapper::toDtoList).toList();
+        return movieListRepository.findByUserId(userId).stream().map(movieListMapper::toDtoList).toList();
     }
 
 
@@ -70,11 +67,10 @@ public class MovieListServiceImpl implements MovieListService {
         var list = movieListRepository.findById(listId).orElseThrow(
                 () -> new MovieListNotFoundException("List not found with id: " + listId)
         );
-        var item = MovieListItem.builder().movieId(request.movieId())
-                .title(request.title()).movieList(list).build();
-
+        var item = MovieListItem.builder().movieId(request.movieId()).movieList(list).build();
         var savedItem = movieListItemRepository.save(item);
-        return MovieListMapper.toDto(savedItem);
+        var filmeDto = movieListMapper.buscarFilmePorId(request.movieId());
+        return MovieListMapper.toDto(savedItem, filmeDto);
     }
 
 

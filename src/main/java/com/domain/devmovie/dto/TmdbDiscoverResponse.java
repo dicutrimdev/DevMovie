@@ -10,6 +10,7 @@ public class TmdbDiscoverResponse {
 
     @Data
     public static class TmdbMovieResult {
+        private Long id;
         private String title;
         private String overview;
         private String poster_path;

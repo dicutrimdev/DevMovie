@@ -26,6 +26,7 @@ public class FilmeService {
 
         return response.getResults().stream().map(result -> {
             FilmeDTO dto = new FilmeDTO();
+            dto.setId(result.getId());
             dto.setTitulo(result.getTitle());
             dto.setDescricao(result.getOverview());
             dto.setImagem(result.getPoster_path());

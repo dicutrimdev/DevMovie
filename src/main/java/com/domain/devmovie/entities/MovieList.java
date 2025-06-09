@@ -26,6 +26,7 @@ public class MovieList {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Builder.Default
     @OneToMany(mappedBy = "movieList", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MovieListItem> items = new ArrayList<>();
 }
